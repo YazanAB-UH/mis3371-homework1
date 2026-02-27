@@ -1,1 +1,475 @@
-<!-- placeholder -->
+<!DOCTYPE html>
+<!--
+  Program name: patient-form.html
+  Author: [Your Name as it appears in the UH Roster]
+  Date created: February 28, 2026
+  Date last edited: February 28, 2026
+  Version: 2.0
+  Description: MIS3371 Homework 1 - NovaCare Clinic Patient Registration Form.
+               Collects demographic and medical history data for new patient
+               registration. Includes banner with dynamic date, external CSS,
+               table-based form layout, all required HTML5 form element types,
+               and a thank-you redirect on submit.
+-->
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description"
+    content="NovaCare Clinic Patient Registration Form - secure online registration for new patients." />
+  <title>NovaCare Clinic | Patient Registration</title>
+
+  <!-- External CSS stylesheet (MIS3371 requirement) -->
+  <link href="style.css" rel="stylesheet" />
+</head>
+
+<body>
+  <div id="page-wrapper">
+
+    <!-- ============================================================
+         HEADER / BANNER SECTION
+         ============================================================ -->
+    <header id="header-banner" role="banner">
+
+      <!-- Logo + company name area -->
+      <div class="banner-logo-area">
+        <img src="logo.png" alt="NovaCare Clinic Logo" id="main-logo" />
+        <div>
+          <div class="company-name">NovaCare Clinic</div>
+          <div class="company-tagline">Modern Medicine &nbsp;&bull;&nbsp; Superior Care</div>
+        </div>
+      </div>
+
+      <!-- Dynamic date display (inline JavaScript as required) -->
+      <div id="dynamic-date">
+        <span class="date-label">Today is</span>
+        <span id="today-display"></span>
+      </div>
+
+      <!-- Inline script to inject the current day and date dynamically -->
+      <script>
+        (function () {
+          var days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+          var months = ['January', 'February', 'March', 'April', 'May', 'June',
+            'July', 'August', 'September', 'October', 'November', 'December'];
+          var suffixes = ['th', 'st', 'nd', 'rd'];
+
+          var now = new Date();
+          var day = days[now.getDay()];
+          var d = now.getDate();
+          var mon = months[now.getMonth()];
+          var yr = now.getFullYear();
+
+          /* ordinal suffix logic */
+          var v = d % 100;
+          var sfx = (v >= 11 && v <= 13) ? suffixes[0]
+            : suffixes[Math.min(d % 10, 3)];
+
+          document.getElementById('today-display').textContent =
+            day + ', ' + mon + ' ' + d + sfx + ', ' + yr;
+        })();
+      </script>
+
+    </header>
+    <!-- END HEADER SECTION -->
+
+    <!-- ============================================================
+         MAIN FORM SECTION
+         ============================================================ -->
+    <main>
+      <div class="form-container">
+
+        <h1>Patient Registration Form</h1>
+        <p class="form-intro">
+          Welcome to <strong>NovaCare Clinic</strong>. Please complete the registration
+          form below accurately. Fields marked <span class="required">*</span> are
+          required. Your information is kept strictly confidential.
+        </p>
+
+        <!-- ACTION points to thankyou.html -->
+        <form id="registration-form" action="thankyou.html" onsubmit="return validateForm()">
+
+          <!-- 1. PERSONAL INFO -->
+          <div class="section-wrapper">
+            <h2>1. Personal Information</h2>
+          </div>
+          <table id="personal-table" summary="Personal identification fields">
+            <tr>
+              <td class="label-cell"><label for="fname">First Name <span class="required">*</span></label></td>
+              <td>
+                <input type="text" id="fname" name="fname" maxlength="30" placeholder="First name" required />
+              </td>
+              <td class="label-cell" style="width:60px;"><label for="mi">MI</label></td>
+              <td>
+                <input type="text" id="mi" name="mi" maxlength="1" class="input-sm" placeholder="M" />
+              </td>
+              <td class="label-cell"><label for="lname">Last Name <span class="required">*</span></label></td>
+              <td>
+                <input type="text" id="lname" name="lname" maxlength="30" placeholder="Last name" required />
+              </td>
+            </tr>
+
+            <tr>
+              <td class="label-cell"><label for="dob">Date of Birth <span class="required">*</span></label></td>
+              <td colspan="5">
+                <input type="text" id="dob" name="dob" maxlength="10" placeholder="MM/DD/YYYY"
+                  pattern="\d{2}/\d{2}/\d{4}" title="Enter date in MM/DD/YYYY format" required />
+              </td>
+            </tr>
+
+            <tr>
+              <td class="label-cell"><label for="ssn">Social Security # <span class="required">*</span></label></td>
+              <td colspan="5">
+                <input type="password" id="ssn" name="ssn" maxlength="11" placeholder="XXX-XX-XXXX"
+                  pattern="\d{3}-?\d{2}-?\d{4}" title="Enter SSN. Use a fake SSN for testing." autocomplete="off"
+                  required />
+                <div class="pw-hint">&#128274; Field is obscured. Use a fake SSN for testing.</div>
+              </td>
+            </tr>
+
+            <tr>
+              <td class="label-cell"><label for="phone">Phone Number</label></td>
+              <td colspan="5">
+                <input type="text" id="phone" name="phone" maxlength="14" placeholder="(713) 555-0100"
+                  pattern="\(\d{3}\) \d{3}-\d{4}" />
+              </td>
+            </tr>
+
+            <tr>
+              <td class="label-cell"><label for="email">Email Address <span class="required">*</span></label></td>
+              <td colspan="5">
+                <input type="email" id="email" name="email" placeholder="name@domain.com" required />
+              </td>
+            </tr>
+          </table>
+
+          <!-- 2. ADDRESS -->
+          <div class="section-wrapper">
+            <h2>2. Mailing Address</h2>
+          </div>
+          <table id="address-table" summary="Address fields">
+            <tr>
+              <td class="label-cell"><label for="addr1">Address Line 1 <span class="required">*</span></label></td>
+              <td colspan="5">
+                <input type="text" id="addr1" name="addr1" maxlength="30" placeholder="Street address" required />
+              </td>
+            </tr>
+            <tr>
+              <td class="label-cell"><label for="addr2">Address Line 2</label></td>
+              <td colspan="5">
+                <input type="text" id="addr2" name="addr2" maxlength="30" placeholder="Apt, Suite (optional)" />
+              </td>
+            </tr>
+
+            <tr>
+              <td class="label-cell"><label for="city">City <span class="required">*</span></label></td>
+              <td>
+                <input type="text" id="city" name="city" maxlength="30" placeholder="City" required />
+              </td>
+              <td class="label-cell" style="width:50px;"><label for="state">State</label></td>
+              <td>
+                <select id="state" name="state" required>
+                  <option value="">-- State --</option>
+                  <option value="AL">AL - Alabama</option>
+                  <option value="AK">AK - Alaska</option>
+                  <option value="AZ">AZ - Arizona</option>
+                  <option value="AR">AR - Arkansas</option>
+                  <option value="CA">CA - California</option>
+                  <option value="CO">CO - Colorado</option>
+                  <option value="CT">CT - Connecticut</option>
+                  <option value="DE">DE - Delaware</option>
+                  <option value="DC">DC - District of Columbia</option>
+                  <option value="FL">FL - Florida</option>
+                  <option value="GA">GA - Georgia</option>
+                  <option value="HI">HI - Hawaii</option>
+                  <option value="ID">ID - Idaho</option>
+                  <option value="IL">IL - Illinois</option>
+                  <option value="IN">IN - Indiana</option>
+                  <option value="IA">IA - Iowa</option>
+                  <option value="KS">KS - Kansas</option>
+                  <option value="KY">KY - Kentucky</option>
+                  <option value="LA">LA - Louisiana</option>
+                  <option value="ME">ME - Maine</option>
+                  <option value="MD">MD - Maryland</option>
+                  <option value="MA">MA - Massachusetts</option>
+                  <option value="MI">MI - Michigan</option>
+                  <option value="MN">MN - Minnesota</option>
+                  <option value="MS">MS - Mississippi</option>
+                  <option value="MO">MO - Missouri</option>
+                  <option value="MT">MT - Montana</option>
+                  <option value="NE">NE - Nebraska</option>
+                  <option value="NV">NV - Nevada</option>
+                  <option value="NH">NH - New Hampshire</option>
+                  <option value="NJ">NJ - New Jersey</option>
+                  <option value="NM">NM - New Mexico</option>
+                  <option value="NY">NY - New York</option>
+                  <option value="NC">NC - North Carolina</option>
+                  <option value="ND">ND - North Dakota</option>
+                  <option value="OH">OH - Ohio</option>
+                  <option value="OK">OK - Oklahoma</option>
+                  <option value="OR">OR - Oregon</option>
+                  <option value="PA">PA - Pennsylvania</option>
+                  <option value="RI">RI - Rhode Island</option>
+                  <option value="SC">SC - South Carolina</option>
+                  <option value="SD">SD - South Dakota</option>
+                  <option value="TN">TN - Tennessee</option>
+                  <option value="TX" selected>TX - Texas</option>
+                  <option value="UT">UT - Utah</option>
+                  <option value="VT">VT - Vermont</option>
+                  <option value="VA">VA - Virginia</option>
+                  <option value="WA">WA - Washington</option>
+                  <option value="WV">WV - West Virginia</option>
+                  <option value="WI">WI - Wisconsin</option>
+                  <option value="WY">WY - Wyoming</option>
+                  <option value="PR">PR - Puerto Rico</option>
+                </select>
+              </td>
+              <td class="label-cell" style="width:60px;"><label for="zip">Zip</label></td>
+              <td>
+                <input type="text" id="zip" name="zip" maxlength="10" class="input-zip" placeholder="77001"
+                  pattern="\d{5}(-\d{4})?" required />
+              </td>
+            </tr>
+          </table>
+
+          <!-- 3. ACCOUNT CREDENTIALS -->
+          <div class="section-wrapper">
+            <h2>3. Account Setup</h2>
+          </div>
+          <table id="creds-table" summary="User ID and password fields">
+            <tr>
+              <td class="label-cell"><label for="userid">Desired User ID <span class="required">*</span></label></td>
+              <td colspan="5">
+                <input type="text" id="userid" name="userid" maxlength="20" placeholder="Choose a username"
+                  pattern="[A-Za-z0-9_\-]{3,20}" required />
+                <div class="pw-hint">3–20 characters. Letters, numbers, underscores allowed.</div>
+              </td>
+            </tr>
+
+            <tr>
+              <td class="label-cell"><label for="password">Password <span class="required">*</span></label></td>
+              <td colspan="5">
+                <input type="password" id="password" name="password" maxlength="40"
+                  placeholder="Create a strong password" autocomplete="new-password" required />
+                <div class="pw-hint">Min 8 chars.</div>
+              </td>
+            </tr>
+
+            <tr>
+              <td class="label-cell"><label for="password2">Re-Enter Password <span class="required">*</span></label>
+              </td>
+              <td colspan="5">
+                <input type="password" id="password2" name="password2" maxlength="40"
+                  placeholder="Confirm your password" autocomplete="new-password" required />
+              </td>
+            </tr>
+          </table>
+
+          <!-- 4. CHECKBOXES -->
+          <div class="section-wrapper">
+            <h2>4. Medical History</h2>
+          </div>
+          <table id="checkbox-table" summary="Childhood illness checkboxes">
+            <tr>
+              <td class="label-cell" style="vertical-align:top; padding-top:10px;">
+                Previous Illnesses:
+              </td>
+              <td>
+                <div class="checkbox-group">
+                  <label><input type="checkbox" name="illness" value="chicken_pox" /> Chicken Pox</label>
+                  <label><input type="checkbox" name="illness" value="measles" /> Measles</label>
+                  <label><input type="checkbox" name="illness" value="covid19" /> Covid-19</label>
+                  <label><input type="checkbox" name="illness" value="smallpox" /> Small Pox</label>
+                  <label><input type="checkbox" name="illness" value="tetanus" /> Tetanus</label>
+                  <label><input type="checkbox" name="illness" value="mumps" /> Mumps</label>
+                  <label><input type="checkbox" name="illness" value="flu" /> Seasonal Flu</label>
+                  <label><input type="checkbox" name="illness" value="pneumonia" /> Pneumonia</label>
+                </div>
+              </td>
+            </tr>
+
+            <tr>
+              <td class="label-cell" style="vertical-align:top; padding-top:10px;">
+                Allergies:
+              </td>
+              <td>
+                <div class="checkbox-group">
+                  <label><input type="checkbox" name="allergy" value="penicillin" /> Penicillin</label>
+                  <label><input type="checkbox" name="allergy" value="sulfa" /> Sulfa Drugs</label>
+                  <label><input type="checkbox" name="allergy" value="aspirin" /> Aspirin</label>
+                  <label><input type="checkbox" name="allergy" value="latex" /> Latex</label>
+                  <label><input type="checkbox" name="allergy" value="none" /> No Known Allergies</label>
+                </div>
+              </td>
+            </tr>
+          </table>
+
+          <!-- 5. RADIO BUTTONS -->
+          <div class="section-wrapper">
+            <h2>5. Patient Profile</h2>
+          </div>
+          <table id="radio-table" summary="Radio button fields for gender, vaccination, insurance">
+            <tr>
+              <td class="label-cell">Gender <span class="required">*</span></td>
+              <td>
+                <div class="radio-group">
+                  <label><input type="radio" name="gender" value="male" required /> Male</label>
+                  <label><input type="radio" name="gender" value="female" /> Female</label>
+                  <label><input type="radio" name="gender" value="non_binary" /> Non-Binary</label>
+                  <label><input type="radio" name="gender" value="prefer_not" /> Prefer Not to Say</label>
+                </div>
+              </td>
+            </tr>
+
+            <tr>
+              <td class="label-cell">Up-to-Date Vaccinations? <span class="required">*</span></td>
+              <td>
+                <div class="radio-group">
+                  <label><input type="radio" name="vaccinated" value="yes" required /> Yes</label>
+                  <label><input type="radio" name="vaccinated" value="no" /> No</label>
+                  <label><input type="radio" name="vaccinated" value="unsure" /> Unsure</label>
+                </div>
+              </td>
+            </tr>
+
+            <tr>
+              <td class="label-cell">Do You Have Insurance? <span class="required">*</span></td>
+              <td>
+                <div class="radio-group">
+                  <label><input type="radio" name="insurance" value="yes" required /> Yes</label>
+                  <label><input type="radio" name="insurance" value="no" /> No</label>
+                  <label><input type="radio" name="insurance" value="medicaid" /> Medicaid / Medicare</label>
+                </div>
+              </td>
+            </tr>
+
+            <tr>
+              <td class="label-cell">Primary Care Physician?</td>
+              <td>
+                <div class="radio-group">
+                  <label><input type="radio" name="has_pcp" value="yes" /> Yes</label>
+                  <label><input type="radio" name="has_pcp" value="no" /> No</label>
+                </div>
+              </td>
+            </tr>
+          </table>
+
+          <!-- 6. SLIDERS -->
+          <div class="section-wrapper">
+            <h2>6. Health Assessment</h2>
+          </div>
+          <table id="slider-table" summary="Health rating slider">
+            <tr>
+              <td class="label-cell">Overall Health (1–10):</td>
+              <td>
+                <input type="range" id="health-scale" name="health_scale" min="1" max="10" value="5"
+                  oninput="document.getElementById('health-value').textContent = this.value" />
+                <span id="health-value">5</span>
+                <div class="pw-hint">1 = Very poor &nbsp;&bull;&nbsp; 10 = Excellent health</div>
+              </td>
+            </tr>
+
+            <tr>
+              <td class="label-cell">Current Pain Level (0–10):</td>
+              <td>
+                <input type="range" id="pain-scale" name="pain_scale" min="0" max="10" value="0"
+                  oninput="document.getElementById('pain-value').textContent = this.value" />
+                <span id="pain-value">0</span>
+                <div class="pw-hint">0 = No pain &nbsp;&bull;&nbsp; 10 = Worst pain</div>
+              </td>
+            </tr>
+          </table>
+
+          <!-- 7. TEXT AREAS -->
+          <div class="section-wrapper">
+            <h2>7. Symptoms / Chief Complaint</h2>
+          </div>
+          <table id="textarea-table" summary="Symptoms text area">
+            <tr>
+              <td class="label-cell" style="vertical-align:top; padding-top:10px;">
+                <label for="symptoms">Describe Symptoms:</label>
+              </td>
+              <td>
+                <textarea id="symptoms" name="symptoms" rows="4" cols="50"
+                  placeholder="Please describe your symptoms..."></textarea>
+              </td>
+            </tr>
+
+            <tr>
+              <td class="label-cell" style="vertical-align:top; padding-top:10px;">
+                <label for="emergency_contact">Emergency Contact:</label>
+              </td>
+              <td>
+                <input type="text" id="emergency_contact" name="emergency_contact" maxlength="60"
+                  placeholder="Name and phone number" />
+              </td>
+            </tr>
+          </table>
+
+          <!-- FORM BUTTONS -->
+          <div class="btn-group">
+            <input type="reset" id="btn-reset" value="Clear Form" />
+            <input type="submit" id="btn-submit" value="Submit Registration" />
+          </div>
+
+        </form>
+      </div>
+    </main>
+
+    <!-- ============================================================
+         FOOTER SECTION
+         ============================================================ -->
+    <footer id="footer" role="contentinfo">
+      <div class="footer-info">
+        <strong>NovaCare Clinic</strong>
+        1200 Healthcare Blvd, Suite 400<br />
+        Houston, TX&nbsp;&nbsp;77030<br />
+        <a href="mailto:support@novacareclinic.demo">support@novacareclinic.demo</a>
+      </div>
+
+      <div>
+        <button class="btn-contact" onclick="alert('Phone: (713) 555-0200\nEmail: support@novacareclinic.demo')">
+          Contact Support
+        </button>
+        <p style="font-size:0.75rem; margin-top:8px; text-align:center; opacity:0.7;">
+          Open Daily: 7am–8pm CST
+        </p>
+      </div>
+
+      <div class="social-links">
+        <a href="#" title="Facebook">FB</a>
+        <a href="#" title="Twitter / X">X</a>
+        <a href="#" title="Instagram">IG</a>
+        <a href="#" title="LinkedIn">IN</a>
+      </div>
+    </footer>
+
+    <div class="footer-copy">
+      &copy; 2026 NovaCare Clinic. All rights reserved. &nbsp;|&nbsp; MIS3371 Homework 1
+    </div>
+
+  </div>
+
+  <!-- Validation Script -->
+  <script>
+    function validateForm() {
+      var pw1 = document.getElementById('password').value;
+      var pw2 = document.getElementById('password2').value;
+
+      if (pw1 !== pw2) {
+        alert('Passwords do not match. Please re-enter your password.');
+        document.getElementById('password2').focus();
+        return false;
+      }
+      if (pw1.length < 8) {
+        alert('Password must be at least 8 characters long.');
+        document.getElementById('password').focus();
+        return false;
+      }
+      return true;
+    }
+  </script>
+</body>
+
+</html>
